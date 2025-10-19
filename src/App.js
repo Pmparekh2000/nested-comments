@@ -1,23 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import CommentBox from "./components/CommentBox";
+import { useState } from "react";
+import { DUMMY_COMMENTS_DATA } from "./utils/constants";
 
 function App() {
+  const [comments, setComments] = useState(DUMMY_COMMENTS_DATA);
+
+  // Iterating over all top level comments
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {Object.keys(comments)
+        ?.filter((commentId) => !comments[commentId].parentId)
+        ?.map((commentId) => {
+          return (
+            <CommentBox
+              currentComment={comments[commentId]}
+              allComments={comments}
+              setComments={setComments}
+            />
+          );
+        })}
     </div>
   );
 }
